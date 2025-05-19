@@ -79,15 +79,15 @@ data/output/chd_mapped_output.csv
 
 Each row in the output will contain:
 
-scan_id
+- scan_id
 
-report
+- report
 
-chd_name (or "CHD type not found in reference")
+- chd_name (or "CHD type not found in reference")
 
-icd11_code
+- icd11_code
 
-reference_number
+- reference_number
 
 ## ✅ Features
 
