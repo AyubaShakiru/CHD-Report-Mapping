@@ -18,23 +18,23 @@ This project provides a Python-based pipeline to extract Congenital Heart Diseas
 
 ## 📁 Project Structure
 
+```text
 chd_icd_mapping_project/
 ├── data/
-│ ├── input/
-│ │ ├── fetal_reports.csv # Input: scan_id, report
-│ │ └── chd_reference.csv # Input: chd_name, icd11_code, reference_number
-│ └── output/
-│ └── chd_mapped_output.csv # Output: mapped CHDs per report
+│   ├── input/
+│   │   ├── fetal_reports.csv          # Input: scan_id, report
+│   │   └── chd_reference.csv          # Input: chd_name, icd11_code, reference_number
+│   └── output/
+│       └── chd_mapped_output.csv      # Output: mapped CHDs per report
 ├── src/
-│ ├── init.py
-│ ├── chd_prompt.py # Constructs hallucination-resistant GPT prompts
-│ ├── mapper.py # Core processing logic
+│   ├── __init__.py
+│   ├── chd_prompt.py                  # Constructs hallucination-resistant GPT prompts
+│   ├── mapper.py                      # Core processing logic
 ├── config/
-│ └── settings.py # OpenAI API key and model settings
-├── main.py # Entrypoint to run the program
-├── requirements.txt # Python dependencies
-└── README.md # Project overview and instructions
-
+│   └── settings.py                    # OpenAI API key and model settings
+├── main.py                            # Entrypoint to run the program
+├── requirements.txt                   # Python dependencies
+└── README.md                          # Project overview and instructions
 
 ---
 
