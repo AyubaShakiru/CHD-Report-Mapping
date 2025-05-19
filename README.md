@@ -45,16 +45,16 @@ chd_icd_mapping_project/
 - `pandas`, `python-dotenv`
 
 Install dependencies:
-```bash
-pip install -r requirements.txt
+- ```bash
+- pip install -r requirements.txt
 
 
-# 1. 🔑 Setup
+## 1. 🔑 Setup
 Add your OpenAI API key to a .env file in the root directory:
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxx
 
 
-# 2. Prepare your input files:
+## 2. Prepare your input files:
 
 fetal_reports.csv with columns:
 
@@ -104,18 +104,18 @@ reference_number
 💡 Easily extendable for semi-supervised labeling or annotation pipelines
 
 
-👨‍🔬 Collaborators
+## 👨‍🔬 Collaborators
 
 Shakiru Ayuba – PhD Researcher, Birmingham City University
 
 Prof. Bilal Muhammad – Research Supervisor
 
 
-📄 License
+## 📄 License
 This codebase is provided for academic research and educational use only. Contact the author for other uses or distribution.
 
 
-📬 Contact
+## 📬 Contact
 For feedback or collaboration inquiries, please reach out via:
 
 📧 [shakiru.ayuba@mail.bcu.ac.uk]
