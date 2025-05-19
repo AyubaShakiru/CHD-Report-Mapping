@@ -16,7 +16,7 @@ This project provides a Python-based pipeline to extract Congenital Heart Diseas
 
 ---
 
-## 🧱 Project Structure
+## 📁 Project Structure
 
 chd_icd_mapping_project/
 ├── data/
@@ -32,8 +32,8 @@ chd_icd_mapping_project/
 ├── config/
 │ └── settings.py # OpenAI API key and model settings
 ├── main.py # Entrypoint to run the program
-├── requirements.txt
-└── README.md
+├── requirements.txt # Python dependencies
+└── README.md # Project overview and instructions
 
 
 ---
