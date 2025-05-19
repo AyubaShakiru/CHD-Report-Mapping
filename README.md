@@ -35,8 +35,7 @@ chd_icd_mapping_project/
 ├── main.py                            # Entrypoint to run the program
 ├── requirements.txt                   # Python dependencies
 └── README.md                          # Project overview and instructions
-```text
----
+``` 
 
 ## ⚙️ Requirements
 
