@@ -1,0 +1,17 @@
+# Ignore environment variables and secrets
+.env
+
+# Bytecode files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+env/
+
+# Output files
+*.csv
+
+# System files
+.DS_Store
+Thumbs.db
