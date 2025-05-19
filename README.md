@@ -58,17 +58,17 @@ OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxx
 
 fetal_reports.csv with columns:
 
-scan_id
+- scan_id
 
-report
+- report
 
-chd_reference.csv with columns:
+- chd_reference.csv with columns:
 
-chd_name
+- chd_name
 
-icd11_code
+- icd11_code
 
-reference_number
+- reference_number
 
 ## 🚀 Run the Tool
 python main.py
