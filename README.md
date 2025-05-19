@@ -45,7 +45,7 @@ chd_icd_mapping_project/
 - `pandas`, `python-dotenv`
 
 Install dependencies:
-- ```bash
+```bash
 - pip install -r requirements.txt
 
 
@@ -71,16 +71,12 @@ icd11_code
 reference_number
 
 ## 🚀 Run the Tool
-bash
-Copy
-Edit
 python main.py
+
 This will read the reports and reference file, query GPT with structured prompts, and produce a mapped output file at:
 
-bash
-Copy
-Edit
 data/output/chd_mapped_output.csv
+
 Each row in the output will contain:
 
 scan_id
