@@ -89,7 +89,7 @@ icd11_code
 
 reference_number
 
-✅ Features
+## ✅ Features
 
 🔒 Hallucination-resistant design — GPT can only choose from your reference list
 
