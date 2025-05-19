@@ -49,12 +49,12 @@ Install dependencies:
 pip install -r requirements.txt
 
 
-1. 🔑 Setup
+# 1. 🔑 Setup
 Add your OpenAI API key to a .env file in the root directory:
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxx
 
 
-2. Prepare your input files:
+# 2. Prepare your input files:
 
 fetal_reports.csv with columns:
 
@@ -70,7 +70,7 @@ icd11_code
 
 reference_number
 
-🚀 Run the Tool
+## 🚀 Run the Tool
 bash
 Copy
 Edit
