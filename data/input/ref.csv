@@ -4,32 +4,32 @@ Ventricular septal defect,668140715
 Tricuspid atresia,845891723
 Mitral atresia,6462604
 Hypoplastic left heart syndrome,1811800027
-Congenital pulmonary valvar stenosis,353180069
+pulmonary valvar stenosis,353180069
 Pulmonary annular hypoplasia,663601170
-Congenital pulmonary regurgitation,1637894492
+pulmonary regurgitation,1637894492
 Dysplasia of pulmonary valve,706270871
 Bicuspid pulmonary valve,1393194578
-Congenital subpulmonary stenosis,1393194578
-Congenital pulmonary atresia,1883690033
-Congenital pulmonary valvar atresia,2133636301
-Congenital anomaly of aortic valve,1932996411
-Congenital aortic valvar stenosis,1824398514
-Congenital aortic regurgitation,167104804
+subpulmonary stenosis,1393194578
+pulmonary atresia,1883690033
+pulmonary valvar atresia,2133636301
+anomaly of aortic valve,1932996411
+aortic valvar stenosis,1824398514
+aortic regurgitation,167104804
 Bicuspid aortic valve,1328968452
 Unicuspid aortic valve,725458981
 Aortic valvar prolapse,4999832858
 Aortic valvar atresia,1700740306
 Aortic annular hypoplasia,801311773
 Dysplasia of aortic valve,185322419
-Congenital subaortic stenosis,1350872731
+subaortic stenosis,1350872731
 Aorto-left ventricular tunnel,1781288740
 Aorto-right ventricular tunnel,1166626076
 Congenital pulmonary trunk hypoplasia,1152699781
 Absent or atretic pulmonary trunk,1075480254
-Congenital right pulmonary arterial stenosis,2086312270
-Congenital left pulmonary arterial stenosis,1271511092
-Congenital right pulmonary arterial hypoplasia,1176338758
-Congenital left pulmonary arterial hypoplasia,147957913
+right pulmonary arterial stenosis,2086312270
+left pulmonary arterial stenosis,1271511092
+right pulmonary arterial hypoplasia,1176338758
+left pulmonary arterial hypoplasia,147957913
 Absent or atretic right pulmonary artery,773514681
 Absent or atretic left pulmonary artery,211367900
 Pulmonary artery origin from ascending aorta,731364546
@@ -45,11 +45,11 @@ Patent arterial duct,1262462321
 Absent arterial duct,316856895
 Anomalous origin of arterial duct,1488672807
 Myocardial bridging of coronary artery,184231124
-Congenital absence of coronary artery,617293420
+absence of coronary artery,617293420
 Coronary arterial hypoplasia,1156062809
 Complete agenesis of pericardium,1462683633
 Pleuropericardial cyst,989128703
-Congenital cardiac tumour,awaiting ICD number
+cardiac tumour,awaiting ICD number
 Pulmonary arteriovenous fistula,913404991
 Bifid apex of heart,1437052733
 Double outlet right ventricle,141717788
@@ -58,13 +58,13 @@ Absent right superior caval vein,1665636689
 Absent Left superior caval,804505819
 Congenital anomaly of inferior caval vein,1266881625
 Anomalous hepatic venous connection to heart,170873794
-Congenital tricuspid regurgitation,1523583011
-Congenital tricuspid valvar stenosis,1996822362
+tricuspid regurgitation,1523583011
+tricuspid valvar stenosis,1996822362
 Ebstein malformation of tricuspid valve,307157712
-Congenital anomaly of mitral valve,928274753
-Congenital truncal valvar regurgitation,1421479778
+anomaly of mitral valve,928274753
+truncal valvar regurgitation,1421479778
 Atrial septal defect,1285985084
 Common atrioventricular junction,1729725342
 Tetralogy of Fallot,90973426
-Congenital left ventricular anomaly,328449041
-Congenital arterial duct anomaly,429811909
+left ventricular anomaly,328449041
+arterial duct anomaly,429811909
