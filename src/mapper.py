@@ -6,92 +6,71 @@ from src.chd_prompt import build_prompt
 openai.api_key = OPENAI_API_KEY
 
 
-def get_chds_from_gpt(report, known_chds):
-    """Send the report and known CHDs to GPT and return raw CHD list."""
-    try:
-        prompt = build_prompt(report, known_chds)
-        response = openai.ChatCompletion.create(
-            model=MODEL_NAME,
-            messages=[
-                {"role": "system", "content": "You are a clinical assistant for CHD detection and ICD-11 coding."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=TEMPERATURE
-        )
-        return response['choices'][0]['message']['content'].strip()
-    except Exception as e:
-        return f"Error: {e}"
+def extract_chds_from_report(report_text: str, chd_list: list) -> list:
+    """
+    Identifies all CHD mentions in the given report text using a list of known CHDs.
+    Returns a list of matched CHD names.
+    """
+    text = str(report_text).lower()
+    return [chd for chd in chd_list if chd in text]
 
 
-def process_mapping(input_report_path, chd_reference_path, output_path):
-    # Load clinician reports and CHD reference list
-    try:
-        reports_df = pd.read_csv(input_report_path)
-        ref_df = pd.read_csv(chd_reference_path)
-    except Exception as e:
-        print(f"❌ Error reading input files: {e}")
-        return
+def chd_mapping_pipeline(
+    reports_csv: str = "fetal_reports.csv",
+    reference_csv: str = "ref.csv",
+    output_csv: str = "chd_mapped_output.csv"
+) -> pd.DataFrame:
+    """
+    Reads fetal ultrasound reports and a CHD reference file,
+    extracts CHDs from each report, maps them to ICD-11 codes,
+    and writes the results to a CSV file (one row per CHD per report).
+    """
 
-    # Build a dictionary for reference CHDs and a list of known CHDs
-    ref_dict = ref_df.set_index('chd_name').to_dict('index')
-    known_chds = ref_df['chd_name'].tolist()
+    # Load input files
+    reports_df = pd.read_csv(reports_csv)
+    ref_df = pd.read_csv(reference_csv)
 
-    output_rows = []
+    # Prepare reference lookup
+    ref_df['chd_name_lower'] = ref_df['chd_name'].str.lower()
+    chd_dict = ref_df.set_index('chd_name_lower')['icd11_code'].to_dict()
+    known_chds = ref_df['chd_name_lower'].tolist()
+
+    expanded_rows = []
 
     for idx, row in reports_df.iterrows():
-        scan_id = row.get('scan_id')
-        report = row.get('report', '').strip()
-
-        if not report:
-            output_rows.append({
-                'scan_id': scan_id,
-                'report': "",
-                'chd_name': "No report provided",
-                'icd11_code': None,
-                'reference_number': None
-            })
-            continue
-
-        gpt_output = get_chds_from_gpt(report, known_chds)
-
-        # Extract CHDs from GPT response
-        matched_chds = [
-            line.strip() for line in gpt_output.split('\n')
-            if line.strip() and "no chd" not in line.lower()
-        ]
+        scan_id = row.get('scan_id', f"ROW_{idx}")
+        report_text = str(row.get('reports', '')).strip()
+        matched_chds = extract_chds_from_report(report_text, known_chds)
 
         if not matched_chds:
-            output_rows.append({
+            expanded_rows.append({
                 'scan_id': scan_id,
-                'report': report,
-                'chd_name': "No CHD identified",
-                'icd11_code': None,
-                'reference_number': None
+                'report': report_text,
+                'chd_name': 'No CHD identified',
+                'icd11_code': None
             })
         else:
             for chd in matched_chds:
-                chd_clean = chd.strip()
-                if chd_clean in ref_dict:
-                    output_rows.append({
-                        'scan_id': scan_id,
-                        'report': report,
-                        'chd_name': chd_clean,
-                        'icd11_code': ref_dict[chd_clean]['icd11_code'],
-                        'reference_number': ref_dict[chd_clean]['reference_number']
-                    })
-                else:
-                    output_rows.append({
-                        'scan_id': scan_id,
-                        'report': report,
-                        'chd_name': f"CHD type not found in reference: {chd_clean}",
-                        'icd11_code': None,
-                        'reference_number': None
-                    })
+                original_chd_name = ref_df.loc[ref_df['chd_name_lower'] == chd, 'chd_name'].values[0]
+                icd_code = chd_dict.get(chd)
+                expanded_rows.append({
+                    'scan_id': scan_id,
+                    'report': report_text,
+                    'chd_name': original_chd_name,
+                    'icd11_code': icd_code
+                })
 
-    # Save results to output CSV
-    try:
-        out_df = pd.DataFrame(output_rows)
-        out_df.to_csv(output_path, index=False)
-        print(f"✅ ICD mapping output saved to: {output_path}")
-    except Exception as e:
-        print(f"❌ Failed to save output file: {e}")
+    output_df = pd.DataFrame(expanded_rows)
+    output_df.to_csv(output_csv, index=False)
+    print(f"✅ Output saved to: {output_csv}")
+    return output_df
+
+
+# Example usage
+if __name__ == "__main__":
+    df = chd_mapping_pipeline(
+        reports_csv="fetal_reports.csv",
+        reference_csv="ref.csv",
+        output_csv="chd_mapped_output.csv"
+    )
+    print(df.head())
