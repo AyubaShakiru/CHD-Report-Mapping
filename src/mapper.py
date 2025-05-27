@@ -6,61 +6,66 @@ from src.chd_prompt import build_prompt
 openai.api_key = OPENAI_API_KEY
 
 
-def extract_chds_from_report(report_text: str, chd_list: list) -> list:
+import pandas as pd
+
+def analyze_chds_in_report(report_text: str, ref_df: pd.DataFrame):
     """
-    Identifies all CHD mentions in the given report text using a list of known CHDs.
-    Returns a list of matched CHD names.
+    Classify CHDs in a report as 'asserted' (explicitly stated) or 'inferred' (discussed but not clearly diagnosed).
     """
+    asserted_chds = []
+    inferred_chds = []
     text = str(report_text).lower()
-    return [chd for chd in chd_list if chd in text]
+
+    for _, row in ref_df.iterrows():
+        chd_lower = row['chd_name'].lower()
+
+        # Asserted patterns
+        if any(phrase in text for phrase in [
+            f"diagnosed with {chd_lower}",
+            f"confirmed {chd_lower}",
+            f"has {chd_lower}",
+            f"presence of {chd_lower}",
+            f"evidence of {chd_lower}"
+        ]):
+            asserted_chds.append((row['chd_name'], row['icd11_code']))
+
+        # Inferred patterns (CHD name is present but not strongly asserted)
+        elif chd_lower in text:
+            inferred_chds.append((row['chd_name'], row['icd11_code']))
+
+    return asserted_chds, inferred_chds
 
 
-def chd_mapping_pipeline(
-    reports_csv: str = "fetal_reports.csv",
-    reference_csv: str = "ref.csv",
-    output_csv: str = "chd_mapped_output.csv"
+def extended_chd_mapping_pipeline(
+    reports_csv: str,
+    reference_csv: str,
+    output_csv: str
 ) -> pd.DataFrame:
     """
-    Reads fetal ultrasound reports and a CHD reference file,
-    extracts CHDs from each report, maps them to ICD-11 codes,
-    and writes the results to a CSV file (one row per CHD per report).
+    Process fetal ultrasound reports and classify CHDs as asserted or inferred,
+    mapping to ICD-11 codes and saving the result to a CSV file.
     """
-
-    # Load input files
     reports_df = pd.read_csv(reports_csv)
     ref_df = pd.read_csv(reference_csv)
 
-    # Prepare reference lookup
-    ref_df['chd_name_lower'] = ref_df['chd_name'].str.lower()
-    chd_dict = ref_df.set_index('chd_name_lower')['icd11_code'].to_dict()
-    known_chds = ref_df['chd_name_lower'].tolist()
-
-    expanded_rows = []
+    results = []
 
     for idx, row in reports_df.iterrows():
         scan_id = row.get('scan_id', f"ROW_{idx}")
         report_text = str(row.get('reports', '')).strip()
-        matched_chds = extract_chds_from_report(report_text, known_chds)
 
-        if not matched_chds:
-            expanded_rows.append({
-                'scan_id': scan_id,
-                'report': report_text,
-                'chd_name': 'No CHD identified',
-                'icd11_code': None
-            })
-        else:
-            for chd in matched_chds:
-                original_chd_name = ref_df.loc[ref_df['chd_name_lower'] == chd, 'chd_name'].values[0]
-                icd_code = chd_dict.get(chd)
-                expanded_rows.append({
-                    'scan_id': scan_id,
-                    'report': report_text,
-                    'chd_name': original_chd_name,
-                    'icd11_code': icd_code
-                })
+        asserted, inferred = analyze_chds_in_report(report_text, ref_df)
 
-    output_df = pd.DataFrame(expanded_rows)
+        results.append({
+            "scan_id": scan_id,
+            "report": report_text,
+            "CHD_Asserted": "; ".join([x[0] for x in asserted]) if asserted else "None",
+            "CHD_Inferred": "; ".join([x[0] for x in inferred]) if inferred else "None",
+            "ICD11_Codes_Asserted": "; ".join([x[1] for x in asserted]) if asserted else "None",
+            "ICD11_Codes_Inferred": "; ".join([x[1] for x in inferred]) if inferred else "None"
+        })
+
+    output_df = pd.DataFrame(results)
     output_df.to_csv(output_csv, index=False)
     print(f"✅ Output saved to: {output_csv}")
     return output_df
@@ -68,9 +73,9 @@ def chd_mapping_pipeline(
 
 # Example usage
 if __name__ == "__main__":
-    df = chd_mapping_pipeline(
-        reports_csv="fetal_reports.csv",
-        reference_csv="ref.csv",
-        output_csv="chd_mapped_output.csv"
-    )
+    reports_file = "fetal_reports.csv"
+    reference_file = "ref.csv"
+    output_file = "extended_chd_analysis.csv"
+
+    df = extended_chd_mapping_pipeline(reports_file, reference_file, output_file)
     print(df.head())
